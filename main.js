@@ -3,10 +3,7 @@ config()
 
 // Import the framework and instantiate it
 import Fastify from 'fastify'
-import bodyParser from 'body-parser'
-import path from 'path'
-import cors from 'cors'
-import helmet from 'helmet'
+import cors from '@fastify/cors'
 
 
 // config
@@ -20,10 +17,16 @@ const fastify = Fastify({
   logger: true
 })
 
-// Declare a route
-fastify.get('/', async function handler (request, reply) {
-  return { hello: 'world' }
+// declare config
+await fastify.register(cors, { 
+  // put your options here
+  origin: '*',
 })
+
+// Declare a route
+// fastify.get('/', async function handler (request, reply) {
+//   return { hello: 'world' }
+// })
 
 // Run the server!
 try {
