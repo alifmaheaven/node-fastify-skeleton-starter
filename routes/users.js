@@ -3,6 +3,8 @@ import yup from 'yup'
 import validator from '../config/validator.js'
 // -end-
 
+import verify from '../middleware/verify.js';
+
 import { login, getData } from '../controllers/usersController.js'
 
 export default function (fastify, opts, done) {
@@ -16,6 +18,7 @@ export default function (fastify, opts, done) {
       })
     }
   ),
+  verify,
   login
   );
 
