@@ -5,6 +5,12 @@ config()
 import Fastify from 'fastify'
 import cors from '@fastify/cors'
 
+import response from './config/response.js'
+
+
+// import routes
+import usersRoute from './routes/users.js'
+
 
 // config
 
@@ -14,7 +20,15 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 
 const fastify = Fastify({
-  logger: true
+  // logger: true,
+})
+
+fastify.setErrorHandler((error, request, reply) => {
+  response.bad(
+    error.message, 
+    error.inner.reduce((obj, { path, message }) => ({ ...obj, [path]: message }), {}), 
+    reply
+  );
 })
 
 // declare config
@@ -24,9 +38,10 @@ await fastify.register(cors, {
 })
 
 // Declare a route
-// fastify.get('/', async function handler (request, reply) {
-//   return { hello: 'world' }
-// })
+fastify.get('/', async function handler (request, reply) {
+  return { hello: 'world' }
+})
+fastify.register(usersRoute, { prefix: '/api/v1/users' })
 
 // Run the server!
 try {
