@@ -2,7 +2,7 @@ import { config } from 'dotenv';
 config();
 
 import jwt from 'jsonwebtoken';
-import response from '../config/response.js';
+import response from '../utils/response.js';
 
 const SCREET_KEY = process.env.SCREET_KEY;
 

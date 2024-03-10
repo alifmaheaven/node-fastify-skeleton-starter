@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 
 import { pool } from '../config/database.js';
 
-import response from '../config/response.js';
+import response from '../utils/response.js';
 
 const login = async (request, reply) => {
   const { username, password } = request.body;

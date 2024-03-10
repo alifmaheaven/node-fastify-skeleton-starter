@@ -3,6 +3,7 @@ import verify from '../middleware/verify.js';
 import { login, getData } from '../controllers/usersController.js'
 
 export default function (fastify, opts, done) {
+  // decorators here
   fastify.post(
   '/login', 
   {
