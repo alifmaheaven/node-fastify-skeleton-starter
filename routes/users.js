@@ -1,8 +1,3 @@
-// -start- for validation
-import yup from 'yup'
-import validator from '../config/validator.js'
-// -end-
-
 import verify from '../middleware/verify.js';
 
 import { login, getData } from '../controllers/usersController.js'
@@ -10,18 +5,46 @@ import { login, getData } from '../controllers/usersController.js'
 export default function (fastify, opts, done) {
   fastify.post(
   '/login', 
-  validator(
-    {
-      body: yup.object().shape({
-        username: yup.string().required(),
-        password: yup.string().required(),
-      })
-    }
-  ),
-  verify,
+  {
+    schema: {
+      description: 'This For login',
+      tags: ['user'],
+      body: {
+        type: 'object',
+        required: ['username', 'password'],
+        properties: {
+          username: { type: 'string' },
+          password: { type: 'string' },
+        }
+      },
+      response: {
+        default: {
+          type: 'object',
+          properties: {
+            code: { type: 'number' },
+            message: { type: 'string' },
+            data: { 
+              type: 'object',
+              properties: {
+                username: { type: 'string' },
+                password: { type: 'string' },
+                token: { type: 'string' },
+              }
+            }
+          }
+        },
+      },
+      security: [
+        {
+          "Bearer": []
+        }
+      ]
+    },
+  },
   login
   );
 
-  fastify.get('/', getData)
+  fastify.put('/',{}, verify, getData);
+  
   done()
 }
