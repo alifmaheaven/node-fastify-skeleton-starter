@@ -4,8 +4,13 @@
   "type": "module",
   "description": "",
   "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "tap --coverage-report=html tests/**/**.test.js",
+    "test:nostop": "tap --before=test/before.js test/**/**.test.js --no-check-coverage",
+    "test:coverage": "tap --coverage-report=html --before=test/run-before.js test/**/**.test.js --after=test/run-after.js",
     "start": "node server.js"
   },
   "author": "",
@@ -24,5 +29,10 @@
     "pg": "^8.11.3",
     "uuid": "^9.0.1",
     "yup": "^1.4.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "pino-pretty": "^10.3.1",
+    "tap": "^18.7.1"
   }
 }

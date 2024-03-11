@@ -45,7 +45,7 @@ export default function (fastify, opts, done) {
   login
   );
 
-  fastify.put('/',{}, verify, getData);
+  fastify.get('/',{}, getData);
   
   done()
 }

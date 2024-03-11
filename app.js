@@ -12,7 +12,7 @@ import usersRoute from './routes/users.js';
 
 const build = async (opts = {}) => {
   const app = Fastify(opts);
-
+  
   // security
   await app.register(cors, { 
     // put your options here
@@ -64,7 +64,7 @@ const build = async (opts = {}) => {
 
   // router
   await app.get('/', async function handler (request, reply) {
-    return { hello: 'world' }
+    return { message: "Hello World" }
   })
   await app.register(usersRoute, { prefix: '/api/v1/users' });
 
