@@ -8,11 +8,11 @@ import swagger from '@fastify/swagger';
 import swaggerUI from '@fastify/swagger-ui';
 
 // import routes
-import usersRoute from './routes/users.js';
+import authenticationRoute from './routes/authentication.js';
 
 const build = async (opts = {}) => {
   const app = Fastify(opts);
-  
+
   // security
   await app.register(cors, { 
     // put your options here
@@ -66,7 +66,7 @@ const build = async (opts = {}) => {
   await app.get('/', async function handler (request, reply) {
     return { message: "Hello World" }
   })
-  await app.register(usersRoute, { prefix: '/api/v1/users' });
+  await app.register(authenticationRoute, { prefix: '/api/v1/authentication' });
 
   // return after definition
   return app;

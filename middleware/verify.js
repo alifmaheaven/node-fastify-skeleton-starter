@@ -4,23 +4,24 @@ config();
 import jwt from 'jsonwebtoken';
 import response from '../utils/response.js';
 
-const SCREET_KEY = process.env.SCREET_KEY;
-
-const verifyToken = async (req, res, next) => {
-  const bearerHeader = req.headers['authorization'];
+const verifyToken = async (request, reply, next) => {
+  const bearerHeader = request.headers['authorization'];
   if (typeof bearerHeader !== 'undefined') {
     const bearer = bearerHeader.split(' ');
     const bearerToken = bearer[1];
-    req.token = bearerToken;
-    jwt.verify(req.token, SCREET_KEY, (err, authData) => {
+    request.token = bearerToken;
+    await jwt.verify(request.token, process.env.SCREET_KEY, async (err, auth_data) => {
       if (err) {
-        response.unauthorized("Session Expired", null, res);
+        response.unauthorized("Session Expired", null, reply);
       } else {
+        // asign data to request
+        request.auth_data = await auth_data;
+        console.log('auth_data', request.auth_data);
         next();
       }
     });
   } else {
-    response.unauthorized("Authorization not found", null, res);
+    response.unauthorized("Authorization not found", null, reply);
   }
 };
 
