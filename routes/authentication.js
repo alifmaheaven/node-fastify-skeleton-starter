@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import verify from '../middleware/verify.js';
 
-import { login, register, profile, getData } from '../controllers/authenticationController.js'
+import { login, register, profile } from '../controllers/authenticationController.js'
 
 export default function (fastify, opts, done) {
   // decorators here
@@ -90,7 +90,7 @@ export default function (fastify, opts, done) {
           }
         ],
       },
-      // preValidation: verify
+      preValidation: verify
     },
     register
   )
@@ -132,8 +132,5 @@ export default function (fastify, opts, done) {
     },
     profile
   )
-
-  fastify.get('/',{}, getData);
-  
   done()
 }

@@ -16,7 +16,6 @@ const verifyToken = async (request, reply, next) => {
       } else {
         // asign data to request
         request.auth_data = await auth_data;
-        console.log('auth_data', request.auth_data);
         next();
       }
     });

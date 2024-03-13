@@ -4,11 +4,13 @@ config()
 // Import the framework and instantiate it
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
+import websocket from '@fastify/websocket';
 import swagger from '@fastify/swagger';
 import swaggerUI from '@fastify/swagger-ui';
 
 // import routes
 import authenticationRoute from './routes/authentication.js';
+import crudRoute from './routes/crud.js';
 
 const build = async (opts = {}) => {
   const app = Fastify(opts);
@@ -18,6 +20,11 @@ const build = async (opts = {}) => {
     // put your options here
     origin: '*',
   });
+
+  // websocket
+  await app.register(websocket, {
+    options: { maxPayload: 1048576 }
+  })
 
   // documentation
   await app.register(swagger,{
@@ -34,7 +41,7 @@ const build = async (opts = {}) => {
       schemes: ['http', 'https'],
       tags: [
         { name: 'user', description: 'User related end-points' },
-        { name: 'code', description: 'Code related end-points' }
+        { name: 'crud', description: 'CRUD related end-points' }
       ],
       securityDefinitions: {
         Bearer: {
@@ -67,6 +74,7 @@ const build = async (opts = {}) => {
     return { message: "Hello World" }
   })
   await app.register(authenticationRoute, { prefix: '/api/v1/authentication' });
+  await app.register(crudRoute, { prefix: '/api/v1/crud' });
 
   // return after definition
   return app;

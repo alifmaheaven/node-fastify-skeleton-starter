@@ -82,8 +82,4 @@ const logout = async (request, reply) => {
   response.ok("Logout success", null, reply);
 }
 
-const getData = async (request, reply) => {
-  response.ok("Data already to you", { id: uuidv4() }, reply);
-};
-
-export { login, register, profile, getData };
+export { login, register, profile };
