@@ -14,13 +14,9 @@ export default function (fastify, opts, done) {
         body: {
           type: 'object',
           properties: {
-            name: { type: 'string' },
-            thumb_url: { isFileType: true },
-            img_url: { isFileType: true },
-            status: {
-              type: 'number',
-              enum: [0, 1],
-              default: 1
+            file: {
+              type: "string",
+              format: "binary",
             }
           },
         },

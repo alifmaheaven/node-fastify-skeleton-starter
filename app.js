@@ -30,7 +30,6 @@ const build = async (opts = {}) => {
 
   // multipart
   await app.register(multipart, {
-    addToBody: true,
     limits: {
       fieldNameSize: 100, // Max field name size in bytes
       fieldSize: 1000000, // Max field value size in bytes
