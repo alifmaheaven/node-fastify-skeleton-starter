@@ -7,10 +7,12 @@ import cors from '@fastify/cors';
 import websocket from '@fastify/websocket';
 import swagger from '@fastify/swagger';
 import swaggerUI from '@fastify/swagger-ui';
+import multipart from '@fastify/multipart';
 
 // import routes
 import authenticationRoute from './routes/authentication.js';
 import crudRoute from './routes/crud.js';
+import uploadRoute from './routes/upload.js';
 
 const build = async (opts = {}) => {
   const app = Fastify(opts);
@@ -26,6 +28,19 @@ const build = async (opts = {}) => {
     options: { maxPayload: 1048576 }
   })
 
+  // multipart
+  await app.register(multipart, {
+    addToBody: true,
+    limits: {
+      fieldNameSize: 100, // Max field name size in bytes
+      fieldSize: 1000000, // Max field value size in bytes
+      fields: 10,         // Max number of non-file fields
+      fileSize: 1000000,  // For multipart forms, the max file size
+      files: 1,           // Max number of file fields
+      headerPairs: 2000   // Max number of header key=>value pairs
+    }
+  });
+
   // documentation
   await app.register(swagger,{
     swagger: {
@@ -38,10 +53,12 @@ const build = async (opts = {}) => {
         url: 'https://swagger.io',
         description: 'Find more info here'
       },
+      consumes: ['application/json','multipart/form-data'],
       schemes: ['http', 'https'],
       tags: [
         { name: 'user', description: 'User related end-points' },
-        { name: 'crud', description: 'CRUD related end-points' }
+        { name: 'crud', description: 'CRUD related end-points' },
+        { name: 'upload', description: 'Upload related end-points'}
       ],
       securityDefinitions: {
         Bearer: {
@@ -75,6 +92,7 @@ const build = async (opts = {}) => {
   })
   await app.register(authenticationRoute, { prefix: '/api/v1/authentication' });
   await app.register(crudRoute, { prefix: '/api/v1/crud' });
+  await app.register(uploadRoute, { prefix: '/api/v1/upload' });
 
   // return after definition
   return app;

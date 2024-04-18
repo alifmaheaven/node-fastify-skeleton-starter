@@ -16,6 +16,6 @@ const app = await build({
 try {
   await app.listen({ port: process.env.PORT || 5000 })
 } catch (err) {
-  fastify.log.error(err)
+  app.log.error(err)
   process.exit(1)
 }
